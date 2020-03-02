@@ -1,0 +1,25 @@
+galaxy_info:
+  ansible_role: borg
+  author: Adrian Wyssmann
+  description: Ansible role do install and setup regular backups with borg
+  company: wyssmann.com
+  license: Apache
+
+  min_ansible_version: 2.0
+
+  platforms:
+  - name: EL
+    versions:
+    - all
+  - name: Ubuntu
+    versions:
+    - all
+  - name: Debian
+    versions:
+    - all
+
+  galaxy_tags:
+    - backup
+    - borg
+
+dependencies: []

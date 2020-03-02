@@ -1,0 +1,8 @@
+[Unit]
+Description=Automatic backup {{ backup_name }}
+
+[Service]
+Type=simple
+ExecStart=/bin/sh {{ backup_script_dir}}/borg.{{ backup_name }}.sh
+User=aedu
+Group=aedu

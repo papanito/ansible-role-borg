@@ -1,0 +1,12 @@
+---
+- name: Install borg
+  import_tasks: install-borg.yml
+- name: Delete borg repository
+  import_tasks: delete-borg-repo.yml
+  when: backup_delete|bool == true
+- name: Initialize borg repository
+  import_tasks: initialize-borg-repo.yml
+  when: backup_create|bool == true
+- name: Install borg systemd service
+  import_tasks: install-service.yml
+  when: backup_create|bool == true

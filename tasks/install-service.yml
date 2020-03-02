@@ -1,0 +1,15 @@
+- name: Install backup script for {{ backup_name }}
+  template:
+    src: borg.sh.j2
+    dest: "{{ systemd_script_target }}/automatic-backup-{{ backup_name }}.sh"
+- name: Install systemd service for repository {{ backup_name }}
+  template:
+    src: automatic-backup.service.j2
+    dest: "{{ systemd_target_dir }}/automatic-backup-{{ backup_name }}.service"
+  notify: Restart rsyslog
+- name: Install systemd timer for repository {{ backup_name }}
+  template:
+    src: automatic-backup.timer.j2
+    dest: "{{ systemd_target_dir }}/automatic-backup-{{ backup_name }}.timer"
+  notify: Restart rsyslog
+

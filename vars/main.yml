@@ -1,0 +1,3 @@
+---
+# vars file for ansible-borg
+systemd_script_target: /usr/bin
