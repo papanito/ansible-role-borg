@@ -32,6 +32,7 @@ These are all variables
 |`backup_create`|Creation of repository. You can use the role to explicitly delete an existing `repository` by running the role with `-e backup_delete=true -e backup_create=false`|`true`|
 |`backup_schedule`|Systemd schedule notation for the daily backup to run|`*-*-* 03:00:00`|
 |`systemd_target_dir`|Location where to copy `.service`-files|`/etc/systemd/system/`|
+|`backup_script_dir`|Location where to copy backup script|`/bin/usr/`|
 |`backup_source_dir`|Source directory to backup|-|
 |`backup_exclude_file`|[`EXCLUDEFILE`](https://borgbackup.readthedocs.io/en/stable/usage/create.html) which contains exclude patterns|-|
 
