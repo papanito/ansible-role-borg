@@ -6,10 +6,12 @@
   template:
     src: automatic-backup.service.j2
     dest: "{{ systemd_target_dir }}/automatic-backup-{{ backup_name }}.service"
-  notify: Restart rsyslog
 - name: Install systemd timer for repository {{ backup_name }}
   template:
     src: automatic-backup.timer.j2
     dest: "{{ systemd_target_dir }}/automatic-backup-{{ backup_name }}.timer"
-  notify: Restart rsyslog
-
+- name: enable a timer automatic backup
+  systemd:
+    name: automatic-backup-{{ backup_name }}.timer
+    state: started
+    enabled: yes

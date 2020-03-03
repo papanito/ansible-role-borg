@@ -3,10 +3,11 @@
   import_tasks: install-borg.yml
 - name: Delete borg repository
   import_tasks: delete-borg-repo.yml
-  when: backup_delete|bool == true
+  when: backup_delete
 - name: Initialize borg repository
   import_tasks: initialize-borg-repo.yml
-  when: backup_create|bool == true
+  when: backup_create
 - name: Install borg systemd service
   import_tasks: install-service.yml
-  when: backup_create|bool == true
+  when: backup_create|
+  become: yes

@@ -2,13 +2,13 @@
   block:
     - name: check status of borg repo
       expect:
-        command: borg info ssh://{{backup_user}}@{{ backup_server }}:{{ backup_port }}/{{ target_dir }}\{{ backup_name }}
+        command: borg info ssh://{{ backup_user }}@{{ backup_server }}:{{ backup_port }}/{{ target_dir }}\{{ backup_name }}
         responses:
           passphrase: "{{ backup_encryption_key }}"
   rescue:
   - name: initialize borg
     expect:
-      command: borg init --encryption={{ backup_encryption_method }} ssh://{{backup_user}}@{{ backup_server }}:{{ backup_port }}/{{ target_dir }}\{{ backup_name }}
+      command: borg init --encryption={{ backup_encryption_method }} ssh://{{ backup_user }}@{{ backup_server }}:{{ backup_port }}/{{ target_dir }}\{{ backup_name }}
       responses:
         passphrase:
         - "{{ backup_encryption_key }}"
