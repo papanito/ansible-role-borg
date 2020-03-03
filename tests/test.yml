@@ -1,5 +1,18 @@
 ---
 - hosts: localhost
   remote_user: root
+  vars:
+  - backup_server: localhost
+  - backup_user: root
+  - backup_name: test
+  - backup_encryption_key: test
+  - backup_port: 23
+  - backup_encryption_method: repokey
+  - target_dir: "./backups/"
+  - backup_delete: true
+  - backup_create: true
+  - backup_exclude_file: 
+  - backup_source_dir: ./defaults
+
   roles:
-    - ansible-role-borg -e backup_delete=true
+    - ansible-role-borg
