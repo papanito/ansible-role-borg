@@ -9,5 +9,5 @@
   when: backup_create
 - name: Install borg systemd service
   import_tasks: install-service.yml
-  when: backup_create|
+  when: backup_create
   become: yes
