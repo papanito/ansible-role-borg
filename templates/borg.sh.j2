@@ -23,10 +23,15 @@ borg create                         \
     --show-rc                       \
     --compression lz4               \
     --exclude-caches                \
+{% if backup_exclude_file is defined %}
     --exclude-from {{ backup_exclude_file }} \
-                                    \
+{% elif backup_exclude_list is defined %}
+{% for exclude in backup_exclude_list %}
+    --exclude '{{ exclude }}'      \
+{% endfor %}
+{% endif %}
     ::'{hostname}-{now}'            \
-    {{ backup_source_dir }}                      \
+    {{ backup_source_dir }}         \
     --remote-ratelimit 2048
 
 backup_exit=$?
