@@ -24,7 +24,7 @@ These are all variables
 |`backup_server`|Name of the server|`SERVER`|
 |`backup_user`|Name of the user to connect to the server|`USER`|
 |`backup_name`|Name of backup|`test`|
-|`backup_encryption_key`|Passphrase for the encryption key using `repokey`|`passphrase123`|
+|`backup_encryption_key`|Passphrase for the encryption key using `repokey`|-|
 |`backup_port`|Port to connect to `backup_server`|`23`|
 |`backup_encryption_method`|Borg [encryption method](https://borgbackup.readthedocs.io/en/stable/usage/init.html#encryption-modes), currently only `repokey` implemented|`repokey`|
 |`target_dir`|Target directory of the backups on the `backup_server`|`"./backups/{{ backup_name }}"`|
@@ -34,7 +34,8 @@ These are all variables
 |`systemd_target_dir`|Location where to copy `.service`-files|`/etc/systemd/system/`|
 |`backup_script_dir`|Location where to copy backup script|`/bin/usr/`|
 |`backup_source_dir`|Source directory to backup|-|
-|`backup_exclude_file`|[`EXCLUDEFILE`](https://borgbackup.readthedocs.io/en/stable/usage/create.html) which contains exclude patterns|-|
+|`backup_exclude_file`|[`EXCLUDEFILE`](https://borgbackup.readthedocs.io/en/stable/usage/create.html) which contains exclude patterns<br>Takes precedence over `backup_exclude_list`|-|
+|`backup_exclude_list`|List of patterns which will be added as `--exclude 'PATTERN'`|-|
 
 To keep sensitive information hidden I recommend to use [`ansible-vault`](https://docs.ansible.com/ansible/latest/user_guide/vault.html)
 
@@ -49,9 +50,22 @@ None
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
 ```yaml
-hosts: servers
+- hosts: localhost
+  vars:
+  - backup_server: borg.intra
+  - backup_user: borguser
+  - backup_name: test
+  - backup_encryption_key: test
+  - backup_port: 23
+  - backup_encryption_method: repokey
+  - target_dir: "/var/..backups/"
+  - backup_exclude_list:
+    - "*/Downloads"
+    - "*/google-chrome*"
+  - backup_source_dir: /home/papanito
+  
   roles:
-    - { role: username.rolename, x: 42 }
+  - role: papanito.borg
 ```
 
 ## License
