@@ -1,5 +1,5 @@
 galaxy_info:
-  ansible_role: borg
+  role_name: borg
   author: Adrian Wyssmann
   description: Ansible role do install and setup regular backups with borg
   company: wyssmann.com
