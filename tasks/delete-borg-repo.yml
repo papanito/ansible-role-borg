@@ -11,6 +11,7 @@
     name: automatic-backup-{{ backup_name }}.timer
     state: started
     enabled: no
+  become: Yes
 - name: Remove systemd files
   file:
     path: "{{ systemd_script_target }}/{{ item }}"
@@ -19,3 +20,4 @@
     - automatic-backup-{{ backup_name }}.sh
     - automatic-backup-{{ backup_name }}.service
     - automatic-backup-{{ backup_name }}.timer
+  become: Yes
