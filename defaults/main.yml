@@ -9,5 +9,11 @@ target_dir: "./backups/"
 backup_delete: false
 backup_create: true
 systemd_target_dir: /etc/systemd/system/
-backup_script_dir: /bin/usr/
+systemd_user: backup
+systemd_group: backup
 backup_schedule: "*-*-* 03:00:00"
+backup_prune_dryrun: false
+backup_prune_force: false
+backup_prune_stats: true
+backup_prune_list: true
+backup_prune_save_space: false
