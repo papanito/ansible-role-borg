@@ -7,10 +7,7 @@ Ansible role do install and setup regular backups with [borg](https://github.com
 
    > **Note** In case the repo `target_dir` already exists, the initalization will be skipped
 
-- Create a `systemd` service which regularly (accoring to `backup_schedule`) runs script `borg.sh`
-
-   > **TODO**: add source for `borg.sh` - script is not mine
-
+- Create a `systemd` service which regularly (accoring to `backup_schedule`) runs script `borg.sh` from [borgbackup.org](https://borgbackup.readthedocs.io/en/stable/quickstart.html#automating-backups)
 - There will be an individual borg-script named `automatic-backup-{{backup_name}}.sh` in `/usr/bin` which is customized with
 
   - `backup_source_dir`
