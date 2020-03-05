@@ -37,7 +37,7 @@ These are all variables
 |`systemd_target_dir`|Location where to copy `.service`-files|`/etc/systemd/system/`|
 |`systemd_user`|User for systemd service|`backup`|
 |`systemd_group`|Group for systemd service|`backup`|
-|`backup_source_dir`|Source directory to backup|-|
+|`backup_include_list`|List of source directories to backup|-|
 |`backup_exclude_file`|[`EXCLUDEFILE`](https://borgbackup.readthedocs.io/en/stable/usage/create.html) which contains exclude patterns<br>Takes precedence over `backup_exclude_list`|-|
 |`backup_exclude_list`|List of patterns which will be added as `--exclude 'PATTERN'`|-|
 
@@ -86,7 +86,8 @@ Including an example of how to use your role (for instance, with variables passe
   - backup_exclude_list:
     - "*/Downloads"
     - "*/google-chrome*"
-  - backup_source_dir: /home/papanito
+  - backup_include_list:
+    - /home/papanito
   - backup_prune_keep_daily: 7
   - backup_prune_keep_weekly: 4
   - backup_prune_keep_monthly: 6

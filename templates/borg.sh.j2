@@ -31,7 +31,9 @@ borg create                         \
 {% endfor %}
 {% endif %}
     ::'{hostname}-{now}'            \
-    {{ backup_source_dir }}         \
+{% for backup_source_dir in backup_include_list %}
+    '{{ backup_source_dir }}'      \
+{% endfor %}
     --remote-ratelimit 2048
 
 backup_exit=$?
