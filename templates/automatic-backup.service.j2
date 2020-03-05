@@ -3,6 +3,6 @@ Description=Automatic backup {{ backup_name }}
 
 [Service]
 Type=simple
-ExecStart=/bin/sh {{ backup_script_dir }}/automatic-backup-{{ backup_name }}.sh
-User=aedu
-Group=aedu
+ExecStart=/bin/sh {{ systemd_script_target }}/automatic-backup-{{ backup_name }}.sh
+User={{ systemd_user }}
+Group={{ systemd_group }}

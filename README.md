@@ -11,6 +11,12 @@ Ansible role do install and setup regular backups with [borg](https://github.com
 
    > **TODO**: add source for `borg.sh` - script is not mine
 
+- There will be an individual borg-script named `automatic-backup-{{backup_name}}.sh` in `/usr/bin` which is customized with
+
+  - `backup_source_dir`
+  - `backup_exclude_file` or `backup_exclude_list`
+  - `backup_schedule`
+
 ## Requirements
 
 None
@@ -32,10 +38,30 @@ These are all variables
 |`backup_create`|Creation of repository. You can use the role to explicitly delete an existing `repository` by running the role with `-e backup_delete=true -e backup_create=false`|`true`|
 |`backup_schedule`|Systemd schedule notation for the daily backup to run|`*-*-* 03:00:00`|
 |`systemd_target_dir`|Location where to copy `.service`-files|`/etc/systemd/system/`|
-|`backup_script_dir`|Location where to copy backup script|`/bin/usr/`|
+|`systemd_user`|User for systemd service|`backup`|
+|`systemd_group`|Group for systemd service|`backup`|
 |`backup_source_dir`|Source directory to backup|-|
 |`backup_exclude_file`|[`EXCLUDEFILE`](https://borgbackup.readthedocs.io/en/stable/usage/create.html) which contains exclude patterns<br>Takes precedence over `backup_exclude_list`|-|
 |`backup_exclude_list`|List of patterns which will be added as `--exclude 'PATTERN'`|-|
+
+The script which is deployed also defines the options for `prune` as described at [borg prune](https://borgbackup.readthedocs.io/en/stable/usage/prune.x
+html). Values which expect a number but variable is not defined, then the option is not provided.
+
+|Parameter|Description|Default Value|
+|---------|-----------|-------------|
+|`backup_prune_dryrun`|`-n, --dry-run` do not change repository|`false`|
+|`backup_prune_force`|`--force` force pruning of corrupted archives|`false`|
+|`backup_prune_stats`|`-s, --stats` print statistics for the deleted archive|`true`|
+|`backup_prune_list`|`--list` output verbose list of archives it keeps/prunes|`true`|
+|`backup_prune_keep_within`|`--keep-within INTERVAL` keep all archives within this time interval|-|
+|`backup_prune_keep_last`|`--keep-last, --keep-secondly` number of secondly archives to keep|-|
+|`backup_prune_keep_minutely`|`--keep-minutely` number of minutely archives to keep|-|
+|`backup_prune_keep_hourly`|`-H, --keep-hourly` number of hourly archives to keep|-|
+|`backup_prune_keep_daily`|`-d, --keep-daily` number of daily archives to keep|-|
+|`backup_prune_keep_weekly`|`-w, --keep-weekly` number of weekly archives to keep|-|
+|`backup_prune_keep_monthly`|`-m, --keep-monthly` number of monthly archives to keep|-|
+|`backup_prune_keep_yearly`|`-y, --keep-yearly` number of yearly archives to keep|-|
+|`backup_prune_save_space`|`--save-space` work slower, but using less space|`false`
 
 To keep sensitive information hidden I recommend to use [`ansible-vault`](https://docs.ansible.com/ansible/latest/user_guide/vault.html)
 
@@ -58,11 +84,18 @@ Including an example of how to use your role (for instance, with variables passe
   - backup_encryption_key: test
   - backup_port: 23
   - backup_encryption_method: repokey
-  - target_dir: "/var/..backups/"
+  - target_dir: "/var/backups/"
+  - backup_schedule: "*-*-* 03:00:00"
   - backup_exclude_list:
     - "*/Downloads"
     - "*/google-chrome*"
   - backup_source_dir: /home/papanito
+  - backup_prune_keep_daily: 7
+  - backup_prune_keep_weekly: 4
+  - backup_prune_keep_monthly: 6
+  - backup_prune_keep_yearly: 1
+  - systemd_user: backup
+  - systemd_group: backup
   
   roles:
   - role: papanito.borg
