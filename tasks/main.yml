@@ -9,7 +9,7 @@
   when: backup_server is not defined
 - name: Set service name
   set_fact:
-    service_name: "{{ backup_name }}"
+    service_name: "{{ backup_name }}-{{ backup_server }}"
   when: backup_server is defined
 - name: Set service name
   set_fact:
