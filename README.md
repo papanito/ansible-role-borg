@@ -3,12 +3,15 @@
 Ansible role do install and setup regular backups with [borg](https://github.com/borgbackup/borg). The role does the following
 
 - [Optional] Delete existing repository
-- [Initialize a repository](https://borgbackup.readthedocs.io/en/stable/usage/init.html) @ `backup_server`:`target_dir`
+- [Initialize a repository](https://borgbackup.readthedocs.io/en/stable/usage/init.html) at `protocol`://`backup_server`:`target_dir` or `target_dir`
 
-   > **Note** In case the repo `target_dir` already exists, the initalization will be skipped
+   > **Notes**
+   >
+   > In case the repo `target_dir` already exists, the initalization will be skipped
+   > If `backup_server` is not specified role assumes a local backup i.e. to a local directory
 
 - Create a `systemd` service which regularly (accoring to `backup_schedule`) runs script `borg.sh` from [borgbackup.org](https://borgbackup.readthedocs.io/en/stable/quickstart.html#automating-backups)
-- There will be an individual borg-script named `automatic-backup-{{backup_name}}.sh` in `/usr/bin` which is customized with
+- There will be an individual borg-script named `automatic-backup-{{service_name}}.sh` in `/opt/borg_backup` which is customized with
 
   - `backup_source_dir`
   - `backup_exclude_file` or `backup_exclude_list`
@@ -26,7 +29,7 @@ These are all variables
 |---------|-----------|-------------|
 |`backup_server`|Name of the backup server - if not defined, it assumes a local backup|-|
 |`backup_user`|Name of the user to connect to the server|-|
-|`backup_port`|Port to connect to `backup_server`|`23`|
+|`backup_port`|Port to connect to `backup_server`|-|
 |`protocol`|Protocol used to connect to `backup_server`|`ssh`|
 |`backup_name`|[mandatory] Name of backup||
 |`backup_encryption_key`|[mandatory] Passphrase for the encryption key using `repokey`|-|
@@ -63,7 +66,11 @@ html). Values which expect a number but variable is not defined, then the option
 
 To keep sensitive information hidden I recommend to use [`ansible-vault`](https://docs.ansible.com/ansible/latest/user_guide/vault.html)
 
-TODO: Add example
+You can define the passowrd file in `ansible.cfg` so none vault parameter has to be specified. Thus, the encrypted variable `backup_encryption_key` can be created as follows:
+
+```bash
+ansible-vault encrypt_string  'SupersecretPa$$phrase' --name 'backup_encryption_key'
+```
 
 ## Dependencies
 
@@ -78,10 +85,9 @@ Including an example of how to use your role (for instance, with variables passe
   vars:
   - backup_server: borg.intra
   - backup_user: borguser
-  - backup_name: testname
+  - backup_name: mybackupname
   - backup_encryption_key: test
   - backup_port: 23
-  - backup_encryption_method: repokey
   - target_dir: "/var/backups/"
   - backup_schedule: "*-*-* 03:00:00"
   - backup_exclude_list:
@@ -90,21 +96,19 @@ Including an example of how to use your role (for instance, with variables passe
   - backup_include_list:
     - /home/papanito
   - backup_prune_keep_daily: 7
-  - backup_prune_keep_weekly: 4
+  - backup_prune_keep_weekly: 5
   - backup_prune_keep_monthly: 6
   - backup_prune_keep_yearly: 1
-  - systemd_user: backup
-  - systemd_group: backup
   
   roles:
   - role: papanito.borg
 ```
 
-This will create a backup at `ssh://borguser@borg.intra:/var/backup/testname` and the following systemd files
+This will create a backup at `ssh://borguser@borg.intra:/var/backup/mybackupname` and the following systemd files
 
-- `/opt/borg_backups/automatic-backup-testname-borg.intra.sh` (backup script)
-- `/etc/systemd/system/automatic-backup-testname-borg.intra.service` (systemd service file)
-- `/etc/systemd/system/automatic-backup-testname-borg.intra.timer` (systemd timers file)
+- `/opt/borg_backup/automatic-backup-mybackupname-borg.intra.sh` (backup script)
+- `/etc/systemd/system/automatic-backup-mybackupname-borg.intra.service` (systemd service file)
+- `/etc/systemd/system/automatic-backup-mybackupname-borg.intra.timer` (systemd timers file)
 
 ## Example Playbook local backup
 
@@ -113,11 +117,9 @@ Including an example of how to use your role (for instance, with variables passe
 ```yaml
 - hosts: localhost
   vars:
-  - backup_name: testname
+  - backup_name: mybackupname
   - backup_encryption_key: test
-  - backup_port: 23
-  - backup_encryption_method: repokey
-  - target_dir: "/var/backups/"
+  - target_dir: "/var/backup/"
   - backup_schedule: "*-*-* 03:00:00"
   - backup_exclude_list:
     - "*/Downloads"
@@ -125,21 +127,16 @@ Including an example of how to use your role (for instance, with variables passe
   - backup_include_list:
     - /home/papanito
   - backup_prune_keep_daily: 7
-  - backup_prune_keep_weekly: 4
+  - backup_prune_keep_weekly: 5
   - backup_prune_keep_monthly: 6
   - backup_prune_keep_yearly: 1
-  - systemd_user: backup
-  - systemd_group: backup
-  
-  roles:
-  - role: papanito.borg
 ```
 
-This will create a backup at `/var/backup/testname` and the following systemd files
+This will create a backup at `/var/backup/mybackupname` and the following systemd files
 
-- `/opt/borg_backups/automatic-backup-testname-local.sh` (backup script)
-- `/etc/systemd/system/automatic-backup-testname-local.service` (systemd service file)
-- `/etc/systemd/system/automatic-backup-testname-local.timer` (systemd timers file)
+- `/opt/borg_backups/automatic-backup-mybackupname-local.sh` (backup script)
+- `/etc/systemd/system/automatic-backup-mybackupname-local.service` (systemd service file)
+- `/etc/systemd/system/automatic-backup-mybackupname-local.timer` (systemd timers file)
 
 ## License
 
