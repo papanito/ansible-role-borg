@@ -1,6 +1,6 @@
-- name: delete borg backup for {{ backup_server }}:{{ backup_port }}/{{ target_dir }}\{{ backup_name }}
+- name: delete borg backup {{ target_location }}/{{ backup_name }}
   expect:
-    command: borg delete ssh://{{ backup_user }}@{{ backup_server }}:{{ backup_port }}/{{ target_dir }}\{{ backup_name }}
+    command: borg delete {{ target_location }}/{{ backup_name }}
     responses:
       passphrase:
       - "{{ backup_encryption_key }}"
@@ -8,7 +8,7 @@
       - "YES"
 - name: disable a timer automatic backup
   systemd:
-    name: automatic-backup-{{ backup_name }}.timer
+    name: automatic-backup-{{ service_name }}.timer
     state: started
     enabled: no
   become: Yes
@@ -17,7 +17,7 @@
     path: "{{ systemd_script_target }}/{{ item }}"
     state: absent
   with_items:
-    - automatic-backup-{{ backup_name }}.sh
-    - automatic-backup-{{ backup_name }}.service
-    - automatic-backup-{{ backup_name }}.timer
+    - automatic-backup-{{ service_name }}.sh
+    - automatic-backup-{{ service_name }}.service
+    - automatic-backup-{{ service_name }}.timer
   become: Yes

@@ -1,11 +1,7 @@
 ---
 # defaults file for ansible-borg
-backup_server: SERVER
-backup_user: USER
-backup_port: 23
+protocol: ssh
 backup_encryption_method: repokey
-backup_name: "test"
-target_dir: "./backups/"
 backup_delete: false
 backup_create: true
 systemd_target_dir: /etc/systemd/system/

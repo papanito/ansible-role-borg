@@ -24,11 +24,12 @@ These are all variables
 
 |Parameter|Description|Default Value|
 |---------|-----------|-------------|
-|`backup_server`|Name of the server|`SERVER`|
-|`backup_user`|Name of the user to connect to the server|`USER`|
-|`backup_name`|Name of backup|`test`|
-|`backup_encryption_key`|Passphrase for the encryption key using `repokey`|-|
+|`backup_server`|Name of the backup server - if not defined, it assumes a local backup|-|
+|`backup_user`|Name of the user to connect to the server|-|
 |`backup_port`|Port to connect to `backup_server`|`23`|
+|`protocol`|Protocol used to connect to `backup_server`|`ssh`|
+|`backup_name`|[mandatory] Name of backup||
+|`backup_encryption_key`|[mandatory] Passphrase for the encryption key using `repokey`|-|
 |`backup_encryption_method`|Borg [encryption method](https://borgbackup.readthedocs.io/en/stable/usage/init.html#encryption-modes), currently only `repokey` implemented|`repokey`|
 |`target_dir`|Target directory of the backups on the `backup_server`|`"./backups/{{ backup_name }}"`|
 |`backup_delete`|**WARNING** If set to `true` then existing backup repository will be [deleted](https://borgbackup.readthedocs.io/en/stable/usage/delete.html)|`false`|
@@ -68,7 +69,7 @@ TODO: Add example
 
 None
 
-## Example Playbook
+## Example Playbook remote backup
 
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
@@ -77,7 +78,7 @@ Including an example of how to use your role (for instance, with variables passe
   vars:
   - backup_server: borg.intra
   - backup_user: borguser
-  - backup_name: test
+  - backup_name: testname
   - backup_encryption_key: test
   - backup_port: 23
   - backup_encryption_method: repokey
@@ -98,6 +99,47 @@ Including an example of how to use your role (for instance, with variables passe
   roles:
   - role: papanito.borg
 ```
+
+This will create a backup at `ssh://borguser@borg.intra:/var/backup/testname` and the following systemd files
+
+- `/opt/borg_backups/automatic-backup-testname-borg.intra.sh` (backup script)
+- `/etc/systemd/system/automatic-backup-testname-borg.intra.service` (systemd service file)
+- `/etc/systemd/system/automatic-backup-testname-borg.intra.timer` (systemd timers file)
+
+## Example Playbook local backup
+
+Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+
+```yaml
+- hosts: localhost
+  vars:
+  - backup_name: testname
+  - backup_encryption_key: test
+  - backup_port: 23
+  - backup_encryption_method: repokey
+  - target_dir: "/var/backups/"
+  - backup_schedule: "*-*-* 03:00:00"
+  - backup_exclude_list:
+    - "*/Downloads"
+    - "*/google-chrome*"
+  - backup_include_list:
+    - /home/papanito
+  - backup_prune_keep_daily: 7
+  - backup_prune_keep_weekly: 4
+  - backup_prune_keep_monthly: 6
+  - backup_prune_keep_yearly: 1
+  - systemd_user: backup
+  - systemd_group: backup
+  
+  roles:
+  - role: papanito.borg
+```
+
+This will create a backup at `/var/backup/testname` and the following systemd files
+
+- `/opt/borg_backups/automatic-backup-testname-local.sh` (backup script)
+- `/etc/systemd/system/automatic-backup-testname-local.service` (systemd service file)
+- `/etc/systemd/system/automatic-backup-testname-local.timer` (systemd timers file)
 
 ## License
 

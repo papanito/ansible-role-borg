@@ -1,7 +1,8 @@
 #!/bin/sh
 
 # Setting this, so the repo does not need to be given on the commandline:
-export BORG_REPO=ssh://{{backup_user}}@{{ backup_server }}:{{ backup_port }}/{{ target_dir }}\{{ backup_name }}
+
+export BORG_REPO={{ target_location }}/{{ backup_name }}
 
 # Setting this, so you won't be asked for your repository passphrase:
 export BORG_PASSPHRASE='{{ backup_encryption_key }}'

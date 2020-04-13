@@ -1,4 +1,16 @@
 ---
+- set_fact:
+    target_location: "{{ protocol }}://{{ backup_user }}@{{ backup_server }}:{{ backup_port }}/{{ target_dir }}"
+  when: backup_server is defined
+- set_fact:
+    target_location: "{{ target_dir }}"
+  when: backup_server is not defined
+- set_fact:
+    service_name: "{{ backup_name }}"
+  when: backup_server is defined
+- set_fact:
+    service_name: "{{ backup_name }}-local"
+  when: backup_server is not defined
 - name: Install borg
   import_tasks: install-borg.yml
 - name: Delete borg repository
