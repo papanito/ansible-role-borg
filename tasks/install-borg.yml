@@ -1,6 +1,6 @@
 # tasks file for ansible-borg
 - name: install borg
-  package: 
+  package:
     name: borg
     state: present
   become: yes
