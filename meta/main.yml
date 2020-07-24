@@ -4,6 +4,7 @@ galaxy_info:
   description: Ansible role do install and setup regular backups with borg
   company: wyssmann.com
   license: Apache
+  issue_tracker_url: https://github.com/papanito/ansible-role-borg/issues
 
   min_ansible_version: 2.0
 
