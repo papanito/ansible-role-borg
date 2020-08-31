@@ -1,4 +1,16 @@
-# ansible-role-borg
+# Ansible role "papanito.borg" <!-- omit in toc -->
+
+![Ansible Role](https://img.shields.io/ansible/role/47022) ![Ansible Quality Score](https://img.shields.io/ansible/quality/47022) ![Ansible Role](https://img.shields.io/ansible/role/d/47022) ![GitHub issues](https://img.shields.io/github/issues/papanito/ansible-role-diskmounter) ![GitHub pull requests](https://img.shields.io/github/issues-pr/papanito/ansible-role-diskmounter) 
+
+- [Requirements](#requirements)
+- [Role Variables](#role-variables)
+- [Dependencies](#dependencies)
+- [Examples](#examples)
+  - [Example Playbook remote backup](#example-playbook-remote-backup)
+  - [Example Playbook local backup](#example-playbook-local-backup)
+- [License](#license)
+- [Author Information](#author-information)
+
 
 Ansible role do install and setup regular backups with [borg](https://github.com/borgbackup/borg). The role does the following
 
@@ -76,7 +88,9 @@ ansible-vault encrypt_string  'SupersecretPa$$phrase' --name 'backup_encryption_
 
 None
 
-## Example Playbook remote backup
+## Examples
+
+### Example Playbook remote backup
 
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
@@ -110,7 +124,7 @@ This will create a backup at `ssh://borguser@borg.intra:/var/backup/mybackupname
 - `/etc/systemd/system/automatic-backup-mybackupname-borg.intra.service` (systemd service file)
 - `/etc/systemd/system/automatic-backup-mybackupname-borg.intra.timer` (systemd timers file)
 
-## Example Playbook local backup
+### Example Playbook local backup
 
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
