@@ -1,8 +1,9 @@
 [Unit]
 Description=Automatic backup {{ service_name }}
+{% if borg_systemd_on_failure %}{{ borg_systemd_on_failure }}{% endif %}
 
 [Service]
 Type=simple
 ExecStart=/bin/sh {{ systemd_script_target }}/automatic-backup-{{ service_name }}.sh
-User={{ systemd_user }}
-Group={{ systemd_group }}
+User={{ borg_systemd_user }}
+Group={{ borg_systemd_group }}

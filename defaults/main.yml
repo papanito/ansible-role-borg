@@ -5,8 +5,8 @@ backup_encryption_method: repokey
 backup_delete: false
 backup_create: true
 systemd_target_dir: /etc/systemd/system/
-systemd_user: backup
-systemd_group: backup
+borg_systemd_user: backup
+borg_systemd_group: backup
 backup_schedule: "*-*-* 03:00:00"
 backup_prune_dryrun: false
 backup_prune_force: false
