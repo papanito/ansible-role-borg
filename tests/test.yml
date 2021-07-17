@@ -15,4 +15,4 @@
   - backup_source_dir: ./defaults
 
   roles:
-    - ansible-role-borg
+    - ../ansible-role-borg

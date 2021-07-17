@@ -52,6 +52,8 @@ The following parameters are related to the systemd service file:
 | `borg_systemd_user`       | User for systemd service                                     | `backup`               |
 | `borg_systemd_group`      | Group for systemd service                                    | `backup`               |
 | `borg_systemd_on_failure` | If set it will make an [OnFailure] entry in the service file | `-`                    |
+| `systemd_script_mode`        | Mode of the script file                                  | `0774`                        |
+| `systemd_service_mode`        | Mode of the service file                                  | `0644`                        |
 
 The script which is deployed also defines the options for `prune` as described at [borg prune](https://borgbackup.readthedocs.io/en/stable/usage/prune.x
 html). Values which expect a number but variable is not defined, then the option is not provided.

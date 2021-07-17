@@ -1,5 +1,6 @@
 galaxy_info:
   role_name: borg
+  namespace: papanito
   author: Adrian Wyssmann
   description: Ansible role do install and setup regular backups with borg
   company: wyssmann.com
