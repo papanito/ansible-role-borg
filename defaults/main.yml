@@ -6,8 +6,6 @@ backup_delete: false
 backup_create: true
 systemd_target_dir: /etc/systemd/system/
 
-
-
 backup_schedule: "*-*-* 03:00:00"
 backup_prune_dryrun: false
 backup_prune_force: false
@@ -20,3 +18,4 @@ systemd_script_mode: 0774
 systemd_script_user: root
 borg_systemd_user: backup
 borg_systemd_group: backup
+systemd_service_mode: 0644
