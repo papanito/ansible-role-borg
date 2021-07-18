@@ -1,6 +1,6 @@
 # Ansible role "papanito.borg" <!-- omit in toc -->
 
-![Ansible Role](https://img.shields.io/ansible/role/47022) ![Ansible Quality Score](https://img.shields.io/ansible/quality/47022) ![Ansible Role](https://img.shields.io/ansible/role/d/47022) ![GitHub issues](https://img.shields.io/github/issues/papanito/ansible-role-diskmounter) ![GitHub pull requests](https://img.shields.io/github/issues-pr/papanito/ansible-role-diskmounter) 
+[![Ansible Role](https://img.shields.io/ansible/role/47022)](https://galaxy.ansible.com/papanito/borg) [![Ansible Quality Score](https://img.shields.io/ansible/quality/47022)](https://galaxy.ansible.com/papanito/borg) [![Ansible Role](https://img.shields.io/ansible/role/d/47022)](https://galaxy.ansible.com/papanito/borg) [![GitHub issues](https://img.shields.io/github/issues/papanito/ansible-role-borg)](https://github.com/papanito/ansible-role-borg/issues) [![GitHub pull requests](https://img.shields.io/github/issues-pr/papanito/ansible-role-borg)](https://github.com/papanito/ansible-role-borg/pulls)
 
 Ansible role do install and setup regular backups with [borg](https://github.com/borgbackup/borg). The role does the following
 
